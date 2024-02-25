@@ -3,24 +3,24 @@ import axios from 'axios';
 
 const SignUp = () => {
   const [name, setname] = useState('');
-  const [password, setPassword] = useState('');
+  const [pw, setpw] = useState('');
   const [email, setemail] = useState('');
+  const [id, setid] = useState('');
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       
-      // 비밀번호와 확인 비밀번호 일치 여부 확인
-      //if (password !== confirmPassword) {
-      //  throw new Error('비밀번호가 일치하지 않습니다.');
-      //}
+    
 
       // 회원가입 요청 보내기
-      const response = await axios.post('https://8863-116-47-108-171.ngrok-free.app/user/register', {
+      const response = await axios.post('https://b026-116-47-108-171.ngrok-free.app/user/register', {
         name,
-        password,
+        pw,
         email,
+        id,
       }, {
         withCredentials: true,
         headers: {
@@ -51,14 +51,14 @@ const SignUp = () => {
             placeholder="name"
           />
         </div>
-        <div className="password">
+        <div className="pw">
           <input
             type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="pw"
+            value={pw}
+            onChange={(e) => setpw(e.target.value)}
             className="text_input"
-            placeholder="Password"
+            placeholder="pw"
           />
         </div>
         <div className="email">

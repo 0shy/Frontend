@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const datas = await axios.get('/v1/music/mylist');
+      const datas = await axios.get('/signup');
       setMusicInfo(datas.data); // 가져온 데이터로 상태 업데이트
       setLoading(false);
       console.log(datas.data);
