@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import { Link, Navigate  } from 'react-router-dom';
 import "./SignIn.css";
-import axios from "axios";
-import { Link } from 'react-router-dom';
-
 
 
 axios.defaults.withCredentials = true;
 
-class Signin extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      email: '', 
+      pw: '',   
     };
   }
 
@@ -20,58 +19,72 @@ class Signin extends Component {
     event.preventDefault();
 
     try {
-      const { username, password } = this.state;
-      const response = await requestLogin(username, password);
+      const { email, pw } = this.state;
 
-      // 토큰을 받아오는 데 성공한 경우, 다음 로직을 수행할 수 있습니다.
-      console.log('로그인 성공:', response);
-      // 다른 동작을 수행하거나 페이지를 이동하는 등의 로직을 추가하세요.
+      // 로그인 요청 보내기
+      const response = await axios.post('https://b026-116-47-108-171.ngrok-free.app/user/login', {
+        email,  
+        pw,    
+      }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:3000',
+        },
+      });
+
+      // 로그인 성공 시의 로직 추가
+      console.log('로그인 성공:', response.data);
+
+      if (this.state.redirectToMain) {
+        // redirectToMain이 true일 때 Main 페이지로 리디렉션
+        return <Navigate  to="./Main/Main" />;
+      }
+      
     } catch (error) {
-      // 로그인에 실패한 경우의 처리
-      console.error('로그인 실패:', error);
+      // 로그인 실패 시의 로직 추가
+      console.error('로그인 실패:', error.message);
     }
   };
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
-
+  
     this.setState({ [name]: value });
-
-    // 예시로 폰트 패밀리 설정
-    document.getElementById(name).style.fontFamily = 'Montserrat black';
   };
-
+  
   setEmptyValue = (event) => {
     const { name } = event.target;
-    document.getElementById(name).value = '';
+    this.setState({ [name]: '' });
   };
-
 
   render() {
     return (
-      <div className="login">
+      <div className="signin">
         <h4>Sign In</h4>
         <form onSubmit={this.handleSubmit}>
-          <div className="id">
+          <div className="email">
             <input
               type="text"
-              id="username"
-              name="username"
-              value={this.state.username}
+              id="email"
+              name="email"
+              value={this.state.email}
               onChange={this.handleInputChange}
               onFocus={this.setEmptyValue}
               className="text_input"
+              placeholder="email"
             />
           </div>
-          <div className="password">
+          <div className="pw">
             <input
               type="password"
-              id="password"
-              name="password"
-              value={this.state.password}
+              id="pw"
+              name="pw"
+              value={this.state.pw}
               onChange={this.handleInputChange}
               onFocus={this.setEmptyValue}
               className="text_input"
+              placeholder="pw"
             />
           </div>
           <input
@@ -88,8 +101,4 @@ class Signin extends Component {
   }
 }
 
-export const requestLogin = async (username, password) => {
-  // requestLogin 함수는 동일한 코드
-};
-
-export default Signin;
+export default SignIn;

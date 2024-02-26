@@ -5,15 +5,14 @@ const SignUp = () => {
   const [name, setname] = useState('');
   const [pw, setpw] = useState('');
   const [email, setemail] = useState('');
-  const [id, setid] = useState('');
+  const [id] = useState('');
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      
-    
+
 
       // 회원가입 요청 보내기
       const response = await axios.post('https://b026-116-47-108-171.ngrok-free.app/user/register', {

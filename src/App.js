@@ -11,10 +11,15 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const datas = await axios.get('/signup');
-      setMusicInfo(datas.data); // 가져온 데이터로 상태 업데이트
-      setLoading(false);
-      console.log(datas.data);
+      try {
+        const response = await axios.get('/signup');
+        setMusicInfo(response.data); // 가져온 데이터로 상태 업데이트
+        setLoading(false);
+        console.log(response.data);
+      } catch (error) {
+        console.error('데이터 가져오기 실패:', error.message);
+        setLoading(false);
+      }
     };
 
     fetchData();
