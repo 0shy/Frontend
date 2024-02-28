@@ -15,7 +15,7 @@ const SignUp = () => {
 
 
       // 회원가입 요청 보내기
-      const response = await axios.post('https://b026-116-47-108-171.ngrok-free.app/user/register', {
+      const response = await axios.post('https://354f-116-47-108-171.ngrok-free.app/user/register', {
         name,
         pw,
         email,

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link, Navigate  } from 'react-router-dom';
-import "./SignIn.css";
-
+import { Link, Navigate } from 'react-router-dom';
+import './SignIn.css';
 
 axios.defaults.withCredentials = true;
 
@@ -10,8 +9,9 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '', 
-      pw: '',   
+      email: '',
+      pw: '',
+      redirectToMain: false,
     };
   }
 
@@ -22,25 +22,22 @@ class SignIn extends Component {
       const { email, pw } = this.state;
 
       // 로그인 요청 보내기
-      const response = await axios.post('https://b026-116-47-108-171.ngrok-free.app/user/login', {
-        email,  
-        pw,    
+      const response = await axios.post('https://354f-116-47-108-171.ngrok-free.app/user/login', {
+        email,
+        pw,
       }, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Access-Control-Allow-Origin': 'https://354f-116-47-108-171.ngrok-free.app/user/login',
         },
       });
 
       // 로그인 성공 시의 로직 추가
       console.log('로그인 성공:', response.data);
 
-      if (this.state.redirectToMain) {
-        // redirectToMain이 true일 때 Main 페이지로 리디렉션
-        return <Navigate  to="./Main/Main" />;
-      }
-      
+      this.setState({ redirectToMain: true });
+
     } catch (error) {
       // 로그인 실패 시의 로직 추가
       console.error('로그인 실패:', error.message);
@@ -49,16 +46,20 @@ class SignIn extends Component {
 
   handleInputChange = (event) => {
     const { name, value } = event.target;
-  
     this.setState({ [name]: value });
   };
-  
+
   setEmptyValue = (event) => {
     const { name } = event.target;
     this.setState({ [name]: '' });
   };
 
   render() {
+    if (this.state.redirectToMain) {
+      // redirectToMain이 true일 때 Main 페이지로 리디렉션
+      return <Navigate to="/Main" />;
+    }
+
     return (
       <div className="signin">
         <h4>Sign In</h4>
